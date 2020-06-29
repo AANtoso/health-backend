@@ -61,10 +61,10 @@ class Api::V1::HealthsController < ApplicationController
     private
 
     def set_health
-    
+        @health = Health.find(params[:id])
     end
 
     def health_params
-    
+        params.require(:health).permit(:diagnosis, :medication, :notes)
     end
 end
