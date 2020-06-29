@@ -10,6 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_06_29_230425) do
+
+  create_table "healths", force: :cascade do |t|
+    t.string "diagnosis"
+    t.string "medications"
+    t.string "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "medications", force: :cascade do |t|
+    t.integer "health_id"
+    t.string "name"
+    t.string "dose"
+    t.string "frequency"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
 end
