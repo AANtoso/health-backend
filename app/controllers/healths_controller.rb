@@ -1,36 +1,22 @@
 class Api::V1::HealthsController < ApplicationController
-    before_action :set_health
 
     def index
-        if logged_in?
-        
-        healths = current_user.healths
-
-        render json: HealtSerializer.new(healths)
-
-        else
-            render json: {
-                error: "Please login to view this page!"
-            }
-        end
+        @healths = Health.all 
+        render json: @healths.to_json(include: [:medications]), status: 200
     end
 
     def create
-        health = current_user.healths.build(health_params)
-
-        if health.save
-            render json: HealtSerializer.new(health), status: 200
-        
-        else
-            resp = {
-                error: health.errors.full_messages.to_sentence
-            }
-            render json: resp, status: 400
-        end
+        @health = Health.new(health_params)
+        if @health.save
+            render json: @health.to_json(include: [:medications]), status: 200
     end
 
     def show
-        render json: health
+        @health = Health.find_by(id:params[:id])
+        options = {
+            include: [:medications]
+        }
+        render ison: @health.to_json(include: [:medications]), status: 200
     end
 
     def update
@@ -39,23 +25,14 @@ class Api::V1::HealthsController < ApplicationController
         render json: HealtSerializer.new(health), status: 200
 
         else
-            resp = {
-                error: health.error.full_messages.to_sentence
-            }
-            render json: health.errors, status: 400
+            render json: {error: 'ERROR CREATING HEALTH'}
         end
     end
 
     def destroy
-        if @health.destroy
-            render json: { data: "Health condition deleted." }, status: 200
-        
-        else
-            resp = {
-                error: "Health condition not found."
-            }
-            render json: @health.errors, status: :unprocessable_entity
-        end
+        @health = Health.find_by(id:params[:id])
+        @health.destroy
+            render json: @health.to_json(include: [:medications]), status: 200
     end
 
     private
