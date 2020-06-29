@@ -34,10 +34,28 @@ class Api::V1::HealthsController < ApplicationController
     end
 
     def update
+        if health = Health.find(params[:id])
+        health.update(health_params)
+        render json: HealtSerializer.new(health), status: 200
+
+        else
+            resp = {
+                error: health.error.full_messages.to_sentence
+            }
+            render json: health.errors, status: 400
+        end
     end
 
     def destroy
-    
+        if @health.destroy
+            render json: { data: "Health condition deleted." }, status: 200
+        
+        else
+            resp = {
+                error: "Health condition not found."
+            }
+            render json: @health.errors, status: :unprocessable_entity
+        end
     end
 
     private
