@@ -9,8 +9,8 @@ class Api::V1::HealthsController < ApplicationController
         @health = Health.new(health_params)
         if @health.save
             render json: @health.to_json(include: [:medications]), status: 200
+        end
     end
-
     def show
         @health = Health.find_by(id:params[:id])
         options = {
