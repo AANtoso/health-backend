@@ -1,5 +1,5 @@
 class MedicationSerializer
     include FastJsonapi::ObjectSerializer
-    attributes :id, :name, :dose, :frequency
+    attributes :health_id, :name, :dose, :frequency
     belongs_to :health
 end.

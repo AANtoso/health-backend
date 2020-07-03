@@ -17,7 +17,7 @@ class Api::V1::MedicationsController < ApplicationController
 
     def show
         @medication = Medication.find_by(id:params[:id])
-        render ison: @medication.to_json(include: [:health]), status: 200
+        render json: @medication.to_json(include: [:health]), status: 200
     end
 
     def update
