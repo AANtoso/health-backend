@@ -2,7 +2,7 @@ class Api::V1::HealthsController < ApplicationController
 
     def index
         @healths = Health.all 
-        render json: @healths.to_json(include: [:medications]), status: 200
+        render json: @healths, include: :medications, status: 200
     end
 
     def create
@@ -16,13 +16,13 @@ class Api::V1::HealthsController < ApplicationController
         options = {
             include: [:medications]
         }
-        render ison: @health.to_json(include: [:medications]), status: 200
+        render json: @health.to_json(include: [:medications]), status: 200
     end
 
     def update
         if health = Health.find(params[:id])
         health.update(health_params)
-        render json: HealtSerializer.new(health), status: 200
+        render json: HealthSerializer.new(health), status: 200
 
         else
             render json: {error: 'ERROR CREATING HEALTH'}
@@ -38,6 +38,6 @@ class Api::V1::HealthsController < ApplicationController
     private
 
     def health_params
-        params.require(:health).permit(:diagnosis, :medication, :notes)
+        params.require(:health).permit(:diagnosis)
     end
 end
